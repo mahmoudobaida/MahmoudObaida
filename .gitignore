@@ -1,0 +1,11 @@
+# Original footage lives outside the repo (../CV). Never commit it.
+CV/
+*.new.mp4
+tools/manifest.json
+
+# Editor / OS
+.claude/
+.vscode/
+.DS_Store
+Thumbs.db
+node_modules/
