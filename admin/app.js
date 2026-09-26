@@ -500,7 +500,7 @@ function renderLogin(message = '') {
       h('span', {}, h('b', { text: 'تذكّرني على هذا الجهاز' }), h('small', { text: 'بدونها بيطلب منك التوكن كل مرة تفتح المتصفح. لا تفعّلها على جهاز مشترك.' }))),
     h('button', { class: 'btn btn-primary block', type: 'submit' }, 'دخول'),
   );
-  $('#app').replaceChildren(h('main', { class: 'gate' }, form));
+  $('#app').replaceChildren(h('main', { class: 'gate' }, h('div', { class: 'float' }, form)));
   token.focus();
 }
 
