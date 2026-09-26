@@ -1,5 +1,5 @@
 /*
- * Renders the work section from data/works.json (categories in order, each with its videos),
+ * Renders the projects section from data/works.json (categories in order, each with its videos),
  * runs the video lightbox and highlights the current section in the nav.
  * To add, remove or rename projects and categories, edit data/works.json.
  */
@@ -43,7 +43,7 @@
   function createCategory(category, works) {
     const grid = el('div', { class: 'grid' + (works.every(isVertical) ? ' grid--vertical' : '') }, works.map(createCard));
     return el('div', { class: 'cat', id: `cat-${category.id}` }, [
-      el('div', { class: 'cat-head' }, [el('h3', { text: category.name }), el('span', { text: `${works.length} ${works.length === 1 ? 'project' : 'projects'}` })]),
+      el('div', { class: 'cat-head' }, [el('h3', { text: category.name })]),
       grid,
     ]);
   }

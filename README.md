@@ -5,15 +5,15 @@ A static portfolio website for a photographer and video editor. Plain HTML, CSS 
 ## Structure
 
 ```
-index.html          page markup (Hero, About, Services, Work, Contact)
+index.html          page markup (Hero, About, Services, Projects, Contact)
 css/styles.css      all styling (design tokens are in :root)
-js/main.js          renders the work section, video lightbox, nav highlight
+js/main.js          renders the projects section, video lightbox, nav highlight
 data/works.json     categories and projects (the only content file you edit by hand)
 admin/              dashboard for managing videos and categories (see below)
 media/
   videos/           web-ready H.264 videos
   posters/          video thumbnails
-  photos/           about photo
+  photos/           hero and about photos
 tools/
   encode.mjs        compresses original footage into media/ (needs ffmpeg)
   serve.mjs         local static server with video seeking support
