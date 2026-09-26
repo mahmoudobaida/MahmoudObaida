@@ -491,14 +491,16 @@ function renderLogin(message = '') {
       }
     },
   },
-    h('h1', { text: 'لوحة تحكم الموقع' }),
-    h('p', { class: 'muted', text: 'سجّل الدخول لإدارة الفيديوهات والتصنيفات.' }),
-    h('div', { class: 'field' }, h('label', { for: 'token', text: 'التوكن (GitHub token)' }), token, error),
+    h('div', { class: 'login-head' },
+      h('h1', { text: 'لوحة تحكم الموقع' }),
+      h('p', { class: 'muted', text: 'أدخل التوكن لإدارة الفيديوهات والتصنيفات.' }),
+    ),
+    h('div', { class: 'field' }, h('label', { for: 'token', text: 'التوكن' }), token, error),
     h('label', { class: 'check', for: 'remember' }, remember,
-      h('span', {}, h('b', { text: 'تذكّرني على هذا الجهاز' }), h('small', { text: 'بدونها بيطلب منك التوكن كل مرة تفتح فيها المتصفح من جديد. لا تفعّلها على جهاز مشترك.' }))),
+      h('span', {}, h('b', { text: 'تذكّرني على هذا الجهاز' }), h('small', { text: 'بدونها بيطلب منك التوكن كل مرة تفتح المتصفح. لا تفعّلها على جهاز مشترك.' }))),
     h('button', { class: 'btn btn-primary block', type: 'submit' }, 'دخول'),
   );
-  $('#app').replaceChildren(form);
+  $('#app').replaceChildren(h('main', { class: 'gate' }, form));
   token.focus();
 }
 
