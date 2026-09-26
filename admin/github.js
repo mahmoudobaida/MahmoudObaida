@@ -11,7 +11,7 @@ export class GitHubError extends Error {
 
 const explain = (status, apiMessage) => {
   if (status === 401) return 'التوكن غير صحيح أو انتهت صلاحيته. أنشئ توكن جديد وسجّل الدخول من جديد.';
-  if (status === 403) return 'ما عندك صلاحية على هذا المستودع، أو تجاوزت الحد المسموح مؤقتًا. تأكد إن التوكن عنده صلاحية Contents: Read and write.';
+  if (status === 403) return 'التوكن ما عنده صلاحية الكتابة، أو تجاوزت الحد المسموح مؤقتًا. من إعدادات التوكن على GitHub اضغط «Add permissions» واختر «Contents» ثم غيّر الصلاحية إلى «Read and write».';
   if (status === 404) return 'المستودع غير موجود أو التوكن ما بيغطيه. تأكد من اسم الحساب واسم المستودع.';
   if (status === 409 || status === 422) return 'تم تعديل الموقع من مكان آخر بنفس اللحظة. حدّث الصفحة وجرّب مرة ثانية.';
   return `صار خطأ من GitHub (${status}). ${apiMessage || ''}`.trim();
