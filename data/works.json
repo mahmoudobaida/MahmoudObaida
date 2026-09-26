@@ -35,16 +35,6 @@
       "duration": 100
     },
     {
-      "id": "editing-05",
-      "title": "Autism Children Film-Islamic Help",
-      "category": "editing",
-      "video": "media/videos/editing-05.mp4",
-      "poster": "media/posters/editing-05.jpg",
-      "width": 1920,
-      "height": 1080,
-      "duration": 98
-    },
-    {
       "id": "editing-06",
       "title": "Al-Wafaa Village",
       "category": "editing",
@@ -53,6 +43,16 @@
       "width": 1920,
       "height": 1080,
       "duration": 138
+    },
+    {
+      "id": "editing-05",
+      "title": "Autism Children Film-Islamic Help",
+      "category": "editing",
+      "video": "media/videos/editing-05.mp4",
+      "poster": "media/posters/editing-05.jpg",
+      "width": 1920,
+      "height": 1080,
+      "duration": 98
     },
     {
       "id": "editing-01",
