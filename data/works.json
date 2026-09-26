@@ -35,16 +35,6 @@
       "duration": 100
     },
     {
-      "id": "editing-01",
-      "title": "Qadasaha Al Qadar-Clip",
-      "category": "editing",
-      "video": "media/videos/editing-01.mp4",
-      "poster": "media/posters/editing-01.jpg",
-      "width": 1276,
-      "height": 720,
-      "duration": 156
-    },
-    {
       "id": "editing-05",
       "title": "Autism Children Film — Al-Louh",
       "category": "editing",
@@ -53,6 +43,16 @@
       "width": 1920,
       "height": 1080,
       "duration": 98
+    },
+    {
+      "id": "editing-01",
+      "title": "Qadasaha Al Qadar-Clip",
+      "category": "editing",
+      "video": "media/videos/editing-01.mp4",
+      "poster": "media/posters/editing-01.jpg",
+      "width": 1276,
+      "height": 720,
+      "duration": 156
     },
     {
       "id": "editing-06",
