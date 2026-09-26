@@ -7,13 +7,14 @@ const root = resolve(import.meta.dirname, '..');
 const port = Number(process.argv[2]) || 5173;
 const types = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
-  '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.mp4': 'video/mp4', '.svg': 'image/svg+xml',
+  '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.mp4': 'video/mp4', '.svg': 'image/svg+xml', '.json': 'application/json',
 };
 
 createServer((req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
-  let file = normalize(join(root, url === '/' ? 'index.html' : url));
-  if (!file.startsWith(root) || !existsSync(file) || statSync(file).isDirectory()) {
+  let file = normalize(join(root, url));
+  if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html'); // like GitHub Pages
+  if (!file.startsWith(root) || !existsSync(file)) {
     res.writeHead(404); return res.end('Not found');
   }
   const { size } = statSync(file);

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#070C12">
+<title>لوحة تحكم الموقع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="app"></div>
+
+<div id="busy" class="busy" hidden role="alert" aria-live="assertive">
+  <div class="busy-card">
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="busy-text">جاري الحفظ…</p>
+    <div class="bar"><i id="busy-bar"></i></div>
+    <small>لا تسكّر الصفحة حتى ينتهي.</small>
+  </div>
+</div>
+
+<div id="toasts" class="toasts" aria-live="polite"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

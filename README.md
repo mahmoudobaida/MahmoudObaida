@@ -5,22 +5,23 @@ A static portfolio website for a photographer and video editor. Plain HTML, CSS 
 ## Structure
 
 ```
-index.html        page markup
-css/styles.css    all styling (design tokens are in :root)
-js/works.js       project data: titles, categories, durations
-js/main.js        grid, category filter, video lightbox
+index.html          page markup (Hero, About, Services, Work, Contact)
+css/styles.css      all styling (design tokens are in :root)
+js/main.js          renders the work section, video lightbox, nav highlight
+data/works.json     categories and projects (the only content file you edit by hand)
+admin/              dashboard for managing videos and categories (see below)
 media/
-  videos/         web-ready H.264 videos
-  posters/        video thumbnails
-  photos/         hero and about photos
+  videos/           web-ready H.264 videos
+  posters/          video thumbnails
+  photos/           about photo
 tools/
-  encode.mjs      compresses original footage into media/ (needs ffmpeg)
-  serve.mjs       local static server with video seeking support
+  encode.mjs        compresses original footage into media/ (needs ffmpeg)
+  serve.mjs         local static server with video seeking support
 ```
 
 ## Run locally
 
-Requires Node 20+.
+Requires Node 20+. The site loads `data/works.json` with `fetch`, so it must be served over HTTP (opening `index.html` directly will not show the projects).
 
 ```bash
 node tools/serve.mjs
@@ -28,9 +29,19 @@ node tools/serve.mjs
 
 Then open http://localhost:5173.
 
+## Admin dashboard
+
+Open `/admin/` on the live site (for example `https://<user>.github.io/<repo>/admin/`). It is a static page that edits `data/works.json` and uploads media by committing to this repository through the GitHub API, so there is no server.
+
+- **Sign in** with a GitHub fine-grained personal access token limited to this repository with **Contents: Read and write**. The token is stored only in that browser.
+- **Videos:** upload (MP4, H.264, up to 90 MB; the thumbnail is chosen from a frame of the video), edit title and category, reorder, delete.
+- **Categories:** add, rename, reorder, delete (a category with videos cannot be deleted).
+- Every action is one commit. GitHub Pages republishes the site 1–2 minutes later.
+- Deleting a video removes its files from the site, but they remain in the Git history.
+
 ## Edit content
 
-- **Add, remove or rename a project:** edit `js/works.js`.
+- **Projects and categories:** use the admin dashboard, or edit `data/works.json` by hand. Categories appear in the order listed, and each shows the projects that reference its `id`. A project needs `id`, `title`, `category`, `video`, `poster`, `width`, `height` and `duration` (seconds). Vertical videos (height greater than width) open full screen; horizontal ones keep their own aspect ratio.
 - **Contact links:** edit the Contact section in `index.html`.
 - **Colors and spacing:** edit the variables at the top of `css/styles.css`.
 

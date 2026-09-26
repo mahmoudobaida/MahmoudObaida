@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mahmoud Obaida — Photographer & Video Editor</title>
 <meta name="description" content="Portfolio of Mahmoud Obaida, photographer and video editor. Video editing, reels, motion graphics and AI-assisted video.">
-<meta name="theme-color" content="#080C16">
+<meta name="theme-color" content="#070C12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
@@ -16,9 +16,10 @@
 <header>
   <nav class="wrap">
     <a href="#top" class="logo">MAHMOUD<b>.</b>OBAIDA</a>
-    <ul>
-      <li><a href="#work">Work</a></li>
+    <ul id="nav-links">
       <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#work">Work</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <a href="#contact" class="btn btn-primary">Hire me</a>
@@ -28,64 +29,86 @@
 <main id="top">
   <section class="hero">
     <div class="wrap">
-      <div>
-        <p class="eyebrow">Photographer &amp; Video Editor</p>
-        <h1>Stories cut with <span>rhythm</span> and feeling.</h1>
-        <p class="lead">I'm Mahmoud Obaida. I edit films, reels and motion pieces that hold attention from the first second to the last.</p>
-        <div class="actions">
-          <a href="#work" class="btn btn-primary">View work</a>
-          <a href="#contact" class="btn btn-ghost">Get in touch</a>
-        </div>
+      <p class="eyebrow">Photographer &amp; Video Editor</p>
+      <h1>Stories cut with <span>rhythm</span> and feeling.</h1>
+      <p class="lead">I'm Mahmoud Obaida. I edit films, reels and motion pieces that hold attention from the first second to the last.</p>
+      <div class="actions">
+        <a href="#work" class="btn btn-primary">View work</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
       </div>
-      <div class="hero-photo">
-        <img src="media/photos/hero.jpg" alt="Portrait of Mahmoud Obaida in silhouette">
-        <span class="tag">Mahmoud Obaida</span>
+      <div class="timeline" aria-hidden="true">
+        <span>00:00</span><span>00:15</span><span>00:30</span><span>00:45</span><span>01:00</span>
+        <i class="playhead"></i>
       </div>
-    </div>
-  </section>
-
-  <section id="work">
-    <div class="wrap">
-      <p class="kicker">Selected work</p>
-      <h2>Projects</h2>
-      <p class="sub">Films, social edits and motion pieces. Tap any project to watch.</p>
-      <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
-      <div class="grid" id="grid"></div>
     </div>
   </section>
 
   <section id="about">
     <div class="wrap about">
-      <div class="portrait"><img src="media/photos/portrait.jpg" alt="Mahmoud Obaida" loading="lazy"></div>
+      <div class="portrait"><img src="media/photos/about.jpg" alt="Silhouette portrait of Mahmoud Obaida" loading="lazy"></div>
       <div>
-        <p class="kicker">About</p>
+        <p class="kicker"><b>01</b> About</p>
         <h2>Editing with intention.</h2>
         <p>I'm a photographer and video editor. I turn raw footage into clear, emotional stories, from long-form films to short vertical content made for social feeds.</p>
         <p>Every project gets the same care: a tight structure, clean pacing, and sound and color that feel right for the story.</p>
-        <div class="services">
-          <div class="service"><b>Video editing</b><span>Documentaries, films, interviews</span></div>
-          <div class="service"><b>Reels &amp; social</b><span>Vertical, fast, built to hold</span></div>
-          <div class="service"><b>Motion graphics</b><span>Titles, ads, animated pieces</span></div>
-          <div class="service"><b>AI-assisted video</b><span>Ads and clips with a modern edge</span></div>
-        </div>
       </div>
     </div>
   </section>
 
-  <section id="contact">
+  <section id="services" class="alt">
+    <div class="wrap">
+      <p class="kicker"><b>02</b> Services</p>
+      <h2>What I do</h2>
+      <div class="services">
+        <div class="service"><em>01</em><b>Video editing</b><span>Documentaries, films, interviews</span></div>
+        <div class="service"><em>02</em><b>Motion graphics</b><span>Titles, ads, animated pieces</span></div>
+        <div class="service"><em>03</em><b>Reels &amp; social</b><span>Vertical, fast, built to hold</span></div>
+        <div class="service"><em>04</em><b>AI video</b><span>Ads and clips with a modern edge</span></div>
+      </div>
+      <p class="tools-label">Tools</p>
+      <ul class="tools">
+        <li>Adobe Premiere Pro</li>
+        <li>After Effects</li>
+        <li>DaVinci Resolve</li>
+        <li>Photoshop</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <p class="kicker"><b>03</b> Work</p>
+      <h2>Projects</h2>
+      <p class="sub">Tap any project to watch it.</p>
+      <div id="works" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="contact" class="alt">
     <div class="wrap">
       <div class="contact-box">
-        <p class="kicker">Contact</p>
+        <p class="kicker"><b>04</b> Contact</p>
         <h2>Let's work together</h2>
         <p class="sub">Have a project in mind? Send me a message and I'll get back to you.</p>
         <div class="actions">
-          <a class="btn btn-primary" href="https://wa.me/970599190652" target="_blank" rel="noopener">
-            WhatsApp
-          </a>
-          <a class="btn btn-ghost" href="https://www.instagram.com/mahmoudo_editor" target="_blank" rel="noopener">Instagram</a>
-          <a class="btn btn-ghost" href="https://www.facebook.com/share/1K28f4U4rn/" target="_blank" rel="noopener">Facebook</a>
+          <a class="btn btn-primary" href="https://wa.me/970599190652" target="_blank" rel="noopener">Message on WhatsApp</a>
         </div>
-        <span class="phone">or call <a href="tel:+970599190652">+970 599 190 652</a></span>
+        <p class="connect-label"><span>Connect</span></p>
+        <div class="socials">
+          <a href="https://wa.me/970599190652" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/mahmoudo_editor" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </a>
+          <a href="https://www.facebook.com/share/1K28f4U4rn/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="tel:+970599190652" aria-label="Call +970 599 190 652">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+        </div>
+        <span class="phone" dir="ltr">+970 599 190 652</span>
       </div>
     </div>
   </section>
@@ -94,14 +117,13 @@
 <footer>© <span id="year"></span> Mahmoud Obaida. All rights reserved.</footer>
 
 <dialog id="lightbox" aria-label="Video player">
-  <div class="player">
+  <div class="player" id="player">
     <button class="close" id="close" aria-label="Close video">✕</button>
     <video id="vid" controls playsinline preload="none"></video>
     <p class="cap" id="cap"></p>
   </div>
 </dialog>
 
-<script src="js/works.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
