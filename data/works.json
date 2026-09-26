@@ -75,16 +75,6 @@
       "duration": 136
     },
     {
-      "id": "motion-10",
-      "title": "Al-Diyar — Final Cut",
-      "category": "motion",
-      "video": "media/videos/motion-10.mp4",
-      "poster": "media/posters/motion-10.jpg",
-      "width": 1080,
-      "height": 1920,
-      "duration": 30
-    },
-    {
       "id": "motion-11",
       "title": "Scholar — Subtitled",
       "category": "motion",
@@ -93,6 +83,16 @@
       "width": 1080,
       "height": 1920,
       "duration": 40
+    },
+    {
+      "id": "motion-10",
+      "title": "Al-Diyar — Final Cut",
+      "category": "motion",
+      "video": "media/videos/motion-10.mp4",
+      "poster": "media/posters/motion-10.jpg",
+      "width": 1080,
+      "height": 1920,
+      "duration": 30
     },
     {
       "id": "reels-07",
