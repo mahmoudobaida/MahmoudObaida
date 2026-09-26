@@ -25,6 +25,7 @@
     return node;
   }
   const svg = (markup) => { const t = document.createElement('template'); t.innerHTML = markup; return t.content.firstChild; };
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
   const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
@@ -54,6 +55,8 @@
       .filter(([, list]) => list.length > 0)
       .map(([category, list]) => createCategory(category, list));
     container.replaceChildren(...(blocks.length ? blocks : [el('p', { class: 'state', text: 'Projects are coming soon.' })]));
+    reveal(container.querySelectorAll('.cat-head'));
+    reveal(container.querySelectorAll('.card'), { mod: 4 });
   }
 
   async function load() {
@@ -98,6 +101,59 @@
     }, { rootMargin: '-40% 0px -55% 0px' });
     sections.forEach((s) => observer.observe(s));
   }
+
+  /*
+   * Scroll motion. Elements get a .reveal class here and rise into view once, staggered by their
+   * position inside the parent. Skipped for visitors who prefer reduced motion.
+   */
+  const io = 'IntersectionObserver' in window && !calm
+    ? new IntersectionObserver((entries) => {
+      entries.filter((e) => e.isIntersecting).forEach((e) => { e.target.classList.add('in'); io.unobserve(e.target); });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' })
+    : null;
+
+  function reveal(nodes, { dir, mod = 7 } = {}) {
+    if (!io) return;
+    const seen = new Map();
+    nodes.forEach((node) => {
+      if (node.classList.contains('reveal')) return;
+      const index = seen.get(node.parentElement) ?? 0;
+      seen.set(node.parentElement, index + 1);
+      node.classList.add('reveal');
+      if (dir) node.classList.add(`reveal--${dir}`);
+      node.style.setProperty('--d', `${(index % mod) * 90}ms`);
+      io.observe(node);
+    });
+  }
+
+  const all = (selector) => document.querySelectorAll(selector);
+  reveal(all('.hero .wrap > div:first-child > *'));
+  reveal(all('.hero-photo'), { dir: 'right' });
+  reveal(all('.timeline'));
+  reveal(all('.portrait'), { dir: 'left' });
+  reveal(all('.about > div:last-child > *'));
+  reveal(all('#services .kicker, #services h2'));
+  reveal(all('.service'), { mod: 4 });
+  reveal(all('.tools-label, .tools li'));
+  reveal(all('#projects .kicker, #projects h2'));
+  reveal(all('.contact-box > *'));
+
+  /* Scroll progress bar, and a gentle parallax on the hero photo. */
+  const hero = document.querySelector('.hero-photo');
+  if (hero && !calm) hero.classList.add('parallax');
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      document.documentElement.style.setProperty('--p', max > 0 ? (scrollY / max).toFixed(4) : 0);
+      if (hero && !calm) hero.style.setProperty('--py', `${Math.min(scrollY, 700) * 0.06}px`);
+      ticking = false;
+    });
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
   $('#year').textContent = new Date().getFullYear();
   load();

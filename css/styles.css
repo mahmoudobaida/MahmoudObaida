@@ -25,6 +25,21 @@ img, video { display: block; max-width: 100%; }
 ul { list-style: none; }
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--s3); }
 
+/* Scroll progress bar */
+.progress { position: fixed; top: 0; left: 0; right: 0; z-index: 30; height: 3px; pointer-events: none; }
+.progress i { display: block; height: 100%; background: var(--accent); box-shadow: 0 0 12px var(--glow); transform-origin: left; transform: scaleX(var(--p, 0)); }
+
+/* Scroll reveal: elements rise into place once, when they enter the viewport.
+   Only applied by JS (see main.js), so the page is fully visible without it. */
+.js .reveal { opacity: 0; }
+.js .reveal.in { opacity: 1; animation: rise .8s cubic-bezier(.2, .8, .2, 1) var(--d, 0ms) backwards; }
+.js .reveal--left.in { animation-name: rise-left; }
+.js .reveal--right.in { animation-name: rise-right; }
+@keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes rise-left { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
+@keyframes rise-right { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+.hero-photo.parallax img { transform: translateY(var(--py, 0px)) scale(1.1); will-change: transform; }
+
 /* Header */
 header {
   position: sticky; top: 0; z-index: 20;
@@ -241,5 +256,7 @@ footer { padding: var(--s4) 0 var(--s5); text-align: center; color: var(--muted)
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
   .btn::after, .playhead { animation: none; }
+  .js .reveal { opacity: 1; }
+  .js .reveal.in { animation: none; }
   .btn::after { display: none; }
 }
