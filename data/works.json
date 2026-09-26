@@ -20,7 +20,7 @@
     { "id":"motion-11", "title":"Scholar — Subtitled", "category":"motion", "video":"media/videos/motion-11.mp4", "poster":"media/posters/motion-11.jpg", "width":1080, "height":1920, "duration":40 },
     { "id":"reels-07", "title":"Orphans Appeal 2", "category":"reels", "video":"media/videos/reels-07.mp4", "poster":"media/posters/reels-07.jpg", "width":1080, "height":1920, "duration":28 },
     { "id":"reels-08", "title":"Orphans Project 2", "category":"reels", "video":"media/videos/reels-08.mp4", "poster":"media/posters/reels-08.jpg", "width":1080, "height":1920, "duration":30 },
-    { "id":"ai-12", "title":"AI Advertisement", "category":"ai", "video":"media/videos/ai-12.mp4", "poster":"media/posters/ai-12.jpg", "width":1920, "height":1080, "duration":23 },
+    { "id":"ai-12", "title":"AI Advertisement", "category":"ai", "video":"media/videos/ai-12.mp4", "poster":"media/posters/ai-12.jpg", "width":1930, "height":1080, "duration":23 },
     { "id":"ai-13", "title":"Ramadan Clip", "category":"ai", "video":"media/videos/ai-13.mp4", "poster":"media/posters/ai-13.jpg", "width":1920, "height":1080, "duration":45 }
   ]
 }

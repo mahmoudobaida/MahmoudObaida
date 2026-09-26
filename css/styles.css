@@ -48,7 +48,7 @@ header {
   border-bottom: 1px solid var(--line);
 }
 nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-.logo { font-weight: 800; letter-spacing: .04em; }
+.logo { display: inline-flex; align-items: center; min-height: 44px; font-weight: 800; letter-spacing: .04em; }
 .logo b { color: var(--accent); }
 nav ul { display: flex; gap: var(--s4); }
 nav ul a { color: var(--muted); font-weight: 500; font-size: .95rem; transition: color .2s; }

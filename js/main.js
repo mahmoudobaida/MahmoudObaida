@@ -90,16 +90,16 @@
     video.play().catch(() => {});
   }
 
-  function closePlayer() {
-    video.pause();
-    video.removeAttribute('src');
-    video.load();
-    if (lightbox.open) lightbox.close();
-  }
+  const closePlayer = () => lightbox.close();
 
   $('#close').addEventListener('click', closePlayer);
   $('#player').addEventListener('click', (e) => { if (e.target === e.currentTarget) closePlayer(); });
-  lightbox.addEventListener('close', () => video.pause()); // also fires on Esc
+  // Fires for the close button, a click outside the video and the Esc key: stop playback and free the source.
+  lightbox.addEventListener('close', () => {
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+  });
 
   /* Highlight the nav link of the section currently in view. */
   const links = [...document.querySelectorAll('#nav-links a')];

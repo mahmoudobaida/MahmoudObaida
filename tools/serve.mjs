@@ -14,7 +14,8 @@ createServer((req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
   let file = normalize(join(root, url));
   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html'); // like GitHub Pages
-  if (!file.startsWith(root) || !existsSync(file)) {
+  const hidden = file.slice(root.length).split(/[\\/]/).some((part) => part.startsWith('.')); // .git, .claude, ...
+  if (!file.startsWith(root) || hidden || !existsSync(file)) {
     res.writeHead(404); return res.end('Not found');
   }
   const { size } = statSync(file);
@@ -29,4 +30,4 @@ createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': type, 'Accept-Ranges': 'bytes', 'Content-Length': size });
     createReadStream(file).pipe(res);
   }
-}).listen(port, () => console.log(`http://localhost:${port}`));
+}).listen(port, '127.0.0.1', () => console.log(`http://localhost:${port} (this computer only)`));
