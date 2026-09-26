@@ -8,7 +8,6 @@ const DATA_PATH = 'data/works.json';
 const MAX_VIDEO_BYTES = 90 * 1024 * 1024;   // GitHub rejects files over 100 MB; stay well under
 const REPO_SOFT_LIMIT_MB = 1000;            // size GitHub recommends for a Pages site
 const TOKEN_KEY = 'obaida-admin-token';
-const REPO_KEY = 'obaida-admin-repo';
 
 class UserError extends Error {}
 
@@ -32,7 +31,6 @@ function h(tag, props = {}, ...kids) {
 }
 /** Numbers like 1080×1920 must not be reordered inside right-to-left text. */
 const ltr = (text) => h('span', { class: 'ltr', text });
-const trusted = (markup) => { const t = document.createElement('template'); t.innerHTML = markup; return t.content; };
 
 function toast(message, kind = 'ok', ms = 7000) {
   const node = h('div', { class: `toast ${kind}`, text: message });
@@ -96,7 +94,7 @@ const state = { gh: null, data: null, sizes: {}, tab: 'videos', localPosters: {}
 
 /*
  * The token is kept in sessionStorage (gone when the browser closes) unless the user ticks
- * "remember me", which moves it to localStorage. Repo settings are not secret and always persist.
+ * "remember me", which moves it to localStorage. The repository comes from the page address (see defaultRepo).
  */
 const readToken = () => { try { return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY); } catch { return null; } };
 const storeToken = (token, persistent) => {
@@ -107,8 +105,6 @@ const storeToken = (token, persistent) => {
   } catch { /* storage blocked: the session still works, just without remembering */ }
 };
 const forgetToken = () => { try { sessionStorage.removeItem(TOKEN_KEY); localStorage.removeItem(TOKEN_KEY); } catch { /* ignore */ } };
-const savedRepo = () => { try { return JSON.parse(localStorage.getItem(REPO_KEY)) || {}; } catch { return {}; } };
-const storeRepo = ({ owner, repo }) => { try { localStorage.setItem(REPO_KEY, JSON.stringify({ owner, repo })); } catch { /* ignore */ } };
 
 /* ---------- data changes (each one is a single GitHub commit) ---------- */
 async function mutate({ message, busyText = 'جاري الحفظ…', apply, files = [] }) {
@@ -476,21 +472,9 @@ function categoriesPanel() {
 }
 
 function renderLogin(message = '') {
-  const cfg = { ...defaultRepo(), ...savedRepo() };
   const token = h('input', { type: 'password', id: 'token', autocomplete: 'off', placeholder: 'github_pat_…' });
   const remember = h('input', { type: 'checkbox', id: 'remember' });
-  const owner = h('input', { type: 'text', id: 'owner', value: cfg.owner });
-  const repo = h('input', { type: 'text', id: 'repo', value: cfg.repo });
   const error = h('p', { class: 'error-text', role: 'alert', text: message });
-  const steps = trusted(`<ol>
-    <li>سجّل دخول على <b>github.com</b> بحسابك.</li>
-    <li>اضغط صورتك (فوق) ثم <b>Settings</b>، وبآخر القائمة اليسار <b>Developer settings</b>.</li>
-    <li><b>Personal access tokens</b> ثم <b>Fine-grained tokens</b> ثم <b>Generate new token</b>.</li>
-    <li>اكتب أي اسم (مثلًا <code>portfolio</code>) واختر مدة الصلاحية <b>1 year</b>.</li>
-    <li>عند <b>Repository access</b> اختر <b>Only select repositories</b> ثم اختر مستودع الموقع.</li>
-    <li>عند <b>Permissions</b> ثم <b>Repository permissions</b> ثم <b>Contents</b> اختر <b>Read and write</b>.</li>
-    <li>اضغط <b>Generate token</b>، وانسخ التوكن (بيظهر مرة وحدة فقط) وحطه بالخانة تحت. لا تشاركه مع أحد.</li>
-  </ol>`);
 
   const form = h('form', {
     class: 'login',
@@ -498,11 +482,10 @@ function renderLogin(message = '') {
       e.preventDefault();
       if (!token.value.trim()) { error.textContent = 'الصق التوكن أولًا.'; token.focus(); return; }
       error.textContent = '';
-      const config = { token: token.value.trim(), owner: owner.value.trim(), repo: repo.value.trim(), branch: 'main' };
+      const config = { ...defaultRepo(), token: token.value.trim() };
       try {
         await connect(config);
         storeToken(config.token, remember.checked);
-        storeRepo(config);
       } catch (err) {
         error.textContent = err.message;
       }
@@ -513,10 +496,6 @@ function renderLogin(message = '') {
     h('div', { class: 'field' }, h('label', { for: 'token', text: 'التوكن (GitHub token)' }), token, error),
     h('label', { class: 'check', for: 'remember' }, remember,
       h('span', {}, h('b', { text: 'تذكّرني على هذا الجهاز' }), h('small', { text: 'بدونها بيطلب منك التوكن كل مرة تفتح فيها المتصفح من جديد. لا تفعّلها على جهاز مشترك.' }))),
-    h('details', {}, h('summary', { text: 'كيف أحصل على التوكن؟' }), steps),
-    h('details', {}, h('summary', { text: 'إعدادات متقدمة' }),
-      h('div', { class: 'field' }, h('label', { for: 'owner', text: 'اسم حساب GitHub' }), owner),
-      h('div', { class: 'field' }, h('label', { for: 'repo', text: 'اسم المستودع' }), repo)),
     h('button', { class: 'btn btn-primary block', type: 'submit' }, 'دخول'),
   );
   $('#app').replaceChildren(form);
@@ -558,7 +537,7 @@ try { localStorage.removeItem('obaida-admin'); } catch { /* ignore */ }
 
 const storedToken = readToken();
 if (storedToken) {
-  connect({ ...defaultRepo(), ...savedRepo(), token: storedToken })
+  connect({ ...defaultRepo(), token: storedToken })
     .catch((err) => { forgetToken(); renderLogin(err.message); });
 } else {
   renderLogin();

@@ -73,13 +73,6 @@ input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px v
 .login { max-width: 520px; margin: 8vh auto 0; padding: var(--s4) var(--s3); border: 1px solid var(--line); border-radius: 24px; background: var(--surface); }
 .login h1 { margin-bottom: var(--s1); }
 .login .muted { margin-bottom: var(--s3); }
-details { margin: var(--s2) 0; border: 1px solid var(--line); border-radius: 12px; padding: 0 var(--s2); }
-summary { cursor: pointer; padding: 12px 0; font-weight: 600; min-height: 44px; }
-details[open] summary { border-bottom: 1px solid var(--line); margin-bottom: var(--s1); }
-details ol { padding: 0 var(--s3) var(--s2) 0; color: var(--muted); }
-details li { margin-bottom: 6px; }
-details b { color: var(--text); }
-code { direction: ltr; unicode-bidi: isolate; background: var(--bg); padding: 1px 6px; border-radius: 6px; font-size: .9em; }
 
 /* Header + tabs */
 .top { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); flex-wrap: wrap; margin-bottom: var(--s3); }
