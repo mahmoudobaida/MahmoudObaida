@@ -7,7 +7,8 @@ import { GitHub, GitHubError } from './github.js';
 const DATA_PATH = 'data/works.json';
 const MAX_VIDEO_BYTES = 90 * 1024 * 1024;   // GitHub rejects files over 100 MB; stay well under
 const REPO_SOFT_LIMIT_MB = 1000;            // size GitHub recommends for a Pages site
-const STORAGE_KEY = 'obaida-admin';
+const TOKEN_KEY = 'obaida-admin-token';
+const REPO_KEY = 'obaida-admin-repo';
 
 class UserError extends Error {}
 
@@ -92,9 +93,22 @@ function defaultRepo() {
 }
 
 const state = { gh: null, data: null, sizes: {}, tab: 'videos', localPosters: {} };
-const saved = () => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch { return null; } };
-const remember = (cfg) => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); } catch { /* private mode */ } };
-const forget = () => { try { localStorage.removeItem(STORAGE_KEY); } catch { /* private mode */ } };
+
+/*
+ * The token is kept in sessionStorage (gone when the browser closes) unless the user ticks
+ * "remember me", which moves it to localStorage. Repo settings are not secret and always persist.
+ */
+const readToken = () => { try { return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY); } catch { return null; } };
+const storeToken = (token, persistent) => {
+  try {
+    sessionStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    (persistent ? localStorage : sessionStorage).setItem(TOKEN_KEY, token);
+  } catch { /* storage blocked: the session still works, just without remembering */ }
+};
+const forgetToken = () => { try { sessionStorage.removeItem(TOKEN_KEY); localStorage.removeItem(TOKEN_KEY); } catch { /* ignore */ } };
+const savedRepo = () => { try { return JSON.parse(localStorage.getItem(REPO_KEY)) || {}; } catch { return {}; } };
+const storeRepo = ({ owner, repo }) => { try { localStorage.setItem(REPO_KEY, JSON.stringify({ owner, repo })); } catch { /* ignore */ } };
 
 /* ---------- data changes (each one is a single GitHub commit) ---------- */
 async function mutate({ message, busyText = 'جاري الحفظ…', apply, files = [] }) {
@@ -462,8 +476,9 @@ function categoriesPanel() {
 }
 
 function renderLogin(message = '') {
-  const cfg = { ...defaultRepo(), ...(saved() || {}) };
+  const cfg = { ...defaultRepo(), ...savedRepo() };
   const token = h('input', { type: 'password', id: 'token', autocomplete: 'off', placeholder: 'github_pat_…' });
+  const remember = h('input', { type: 'checkbox', id: 'remember' });
   const owner = h('input', { type: 'text', id: 'owner', value: cfg.owner });
   const repo = h('input', { type: 'text', id: 'repo', value: cfg.repo });
   const error = h('p', { class: 'error-text', role: 'alert', text: message });
@@ -484,17 +499,25 @@ function renderLogin(message = '') {
       if (!token.value.trim()) { error.textContent = 'الصق التوكن أولًا.'; token.focus(); return; }
       error.textContent = '';
       const config = { token: token.value.trim(), owner: owner.value.trim(), repo: repo.value.trim(), branch: 'main' };
-      try { await connect(config); } catch (err) { error.textContent = err.message; }
+      try {
+        await connect(config);
+        storeToken(config.token, remember.checked);
+        storeRepo(config);
+      } catch (err) {
+        error.textContent = err.message;
+      }
     },
   },
     h('h1', { text: 'لوحة تحكم الموقع' }),
     h('p', { class: 'muted', text: 'سجّل الدخول لإدارة الفيديوهات والتصنيفات.' }),
     h('div', { class: 'field' }, h('label', { for: 'token', text: 'التوكن (GitHub token)' }), token, error),
+    h('label', { class: 'check', for: 'remember' }, remember,
+      h('span', {}, h('b', { text: 'تذكّرني على هذا الجهاز' }), h('small', { text: 'بدونها بيطلب منك التوكن كل مرة تفتح فيها المتصفح من جديد. لا تفعّلها على جهاز مشترك.' }))),
     h('details', {}, h('summary', { text: 'كيف أحصل على التوكن؟' }), steps),
     h('details', {}, h('summary', { text: 'إعدادات متقدمة' }),
       h('div', { class: 'field' }, h('label', { for: 'owner', text: 'اسم حساب GitHub' }), owner),
       h('div', { class: 'field' }, h('label', { for: 'repo', text: 'اسم المستودع' }), repo)),
-    h('button', { class: 'btn btn-primary', type: 'submit', style: 'width:100%' }, 'دخول'),
+    h('button', { class: 'btn btn-primary block', type: 'submit' }, 'دخول'),
   );
   $('#app').replaceChildren(form);
   token.focus();
@@ -508,7 +531,7 @@ function render() {
       h('h1', { text: 'لوحة تحكم الموقع' }),
       h('div', { class: 'links' },
         h('a', { class: 'btn btn-sm', href: '../', target: '_blank', rel: 'noopener' }, 'فتح الموقع ↗'),
-        h('button', { class: 'btn btn-sm', type: 'button', onclick: () => { forget(); state.gh = null; state.data = null; renderLogin(); } }, 'تسجيل الخروج'),
+        h('button', { class: 'btn btn-sm', type: 'button', onclick: () => { forgetToken(); state.gh = null; state.data = null; renderLogin(); } }, 'تسجيل الخروج'),
       ),
     ),
     h('div', { class: 'tabs', role: 'tablist' }, tab('videos', 'الفيديوهات'), tab('categories', 'التصنيفات')),
@@ -527,10 +550,16 @@ async function connect(config) {
     state.sizes = await gh.fileSizes();
   });
   state.gh = gh;
-  remember(config);
   render();
 }
 
-const stored = saved();
-if (stored?.token) connect(stored).catch((err) => renderLogin(err.message));
-else renderLogin();
+// Earlier versions kept the token under this key in localStorage; remove any leftover copy.
+try { localStorage.removeItem('obaida-admin'); } catch { /* ignore */ }
+
+const storedToken = readToken();
+if (storedToken) {
+  connect({ ...defaultRepo(), ...savedRepo(), token: storedToken })
+    .catch((err) => { forgetToken(); renderLogin(err.message); });
+} else {
+  renderLogin();
+}
