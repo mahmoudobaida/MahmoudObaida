@@ -1,21 +1,26 @@
 {
   "categories": [
-    { "id": "editing", "name": "Video Editing" },
-    { "id": "motion", "name": "Motion Graphics" },
-    { "id": "reels", "name": "Reels" },
-    { "id": "ai", "name": "AI Video" }
+    { "id":"editing", "name":"Video Editing" },
+    { "id":"motion", "name":"Motion Graphics" },
+    { "id":"reels", "name":"Reels" },
+    { "id":"ai", "name":"AI Video" }
+  ],
+  "tools": [
+    "Adobe Premiere Pro",
+    "After Effects",
+    "Photoshop"
   ],
   "works": [
-    { "id": "editing-01", "title": "Qadasaha Al-Qadar Anthem — Anas Ayyad", "category": "editing", "video": "media/videos/editing-01.mp4", "poster": "media/posters/editing-01.jpg", "width": 1276, "height": 720,  "duration": 156 },
-    { "id": "editing-04", "title": "Autism Children Film — Al-Shawa",       "category": "editing", "video": "media/videos/editing-04.mp4", "poster": "media/posters/editing-04.jpg", "width": 1920, "height": 1080, "duration": 100 },
-    { "id": "editing-05", "title": "Autism Children Film — Al-Louh",        "category": "editing", "video": "media/videos/editing-05.mp4", "poster": "media/posters/editing-05.jpg", "width": 1920, "height": 1080, "duration": 98 },
-    { "id": "editing-06", "title": "Al-Wafaa Village",                      "category": "editing", "video": "media/videos/editing-06.mp4", "poster": "media/posters/editing-06.jpg", "width": 1920, "height": 1080, "duration": 138 },
-    { "id": "motion-09",  "title": "Jordanian Campaign",                    "category": "motion",  "video": "media/videos/motion-09.mp4",  "poster": "media/posters/motion-09.jpg",  "width": 1080, "height": 1920, "duration": 136 },
-    { "id": "motion-10",  "title": "Al-Diyar — Final Cut",                  "category": "motion",  "video": "media/videos/motion-10.mp4",  "poster": "media/posters/motion-10.jpg",  "width": 1080, "height": 1920, "duration": 30 },
-    { "id": "motion-11",  "title": "Scholar — Subtitled",                   "category": "motion",  "video": "media/videos/motion-11.mp4",  "poster": "media/posters/motion-11.jpg",  "width": 1080, "height": 1920, "duration": 40 },
-    { "id": "reels-07",   "title": "Orphans Appeal 2",                      "category": "reels",   "video": "media/videos/reels-07.mp4",   "poster": "media/posters/reels-07.jpg",   "width": 1080, "height": 1920, "duration": 28 },
-    { "id": "reels-08",   "title": "Orphans Project 2",                     "category": "reels",   "video": "media/videos/reels-08.mp4",   "poster": "media/posters/reels-08.jpg",   "width": 1080, "height": 1920, "duration": 30 },
-    { "id": "ai-12",      "title": "AI Advertisement",                      "category": "ai",      "video": "media/videos/ai-12.mp4",      "poster": "media/posters/ai-12.jpg",      "width": 1920, "height": 1080, "duration": 23 },
-    { "id": "ai-13",      "title": "Ramadan Clip",                          "category": "ai",      "video": "media/videos/ai-13.mp4",      "poster": "media/posters/ai-13.jpg",      "width": 1920, "height": 1080, "duration": 45 }
+    { "id":"editing-01", "title":"Qadasaha Al-Qadar Anthem — Anas Ayyad", "category":"editing", "video":"media/videos/editing-01.mp4", "poster":"media/posters/editing-01.jpg", "width":1276, "height":720, "duration":156 },
+    { "id":"editing-04", "title":"Autism Children Film — Al-Shawa", "category":"editing", "video":"media/videos/editing-04.mp4", "poster":"media/posters/editing-04.jpg", "width":1920, "height":1080, "duration":100 },
+    { "id":"editing-05", "title":"Autism Children Film — Al-Louh", "category":"editing", "video":"media/videos/editing-05.mp4", "poster":"media/posters/editing-05.jpg", "width":1920, "height":1080, "duration":98 },
+    { "id":"editing-06", "title":"Al-Wafaa Village", "category":"editing", "video":"media/videos/editing-06.mp4", "poster":"media/posters/editing-06.jpg", "width":1920, "height":1080, "duration":138 },
+    { "id":"motion-09", "title":"Jordanian Campaign", "category":"motion", "video":"media/videos/motion-09.mp4", "poster":"media/posters/motion-09.jpg", "width":1080, "height":1920, "duration":136 },
+    { "id":"motion-10", "title":"Al-Diyar — Final Cut", "category":"motion", "video":"media/videos/motion-10.mp4", "poster":"media/posters/motion-10.jpg", "width":1080, "height":1920, "duration":30 },
+    { "id":"motion-11", "title":"Scholar — Subtitled", "category":"motion", "video":"media/videos/motion-11.mp4", "poster":"media/posters/motion-11.jpg", "width":1080, "height":1920, "duration":40 },
+    { "id":"reels-07", "title":"Orphans Appeal 2", "category":"reels", "video":"media/videos/reels-07.mp4", "poster":"media/posters/reels-07.jpg", "width":1080, "height":1920, "duration":28 },
+    { "id":"reels-08", "title":"Orphans Project 2", "category":"reels", "video":"media/videos/reels-08.mp4", "poster":"media/posters/reels-08.jpg", "width":1080, "height":1920, "duration":30 },
+    { "id":"ai-12", "title":"AI Advertisement", "category":"ai", "video":"media/videos/ai-12.mp4", "poster":"media/posters/ai-12.jpg", "width":1920, "height":1080, "duration":23 },
+    { "id":"ai-13", "title":"Ramadan Clip", "category":"ai", "video":"media/videos/ai-13.mp4", "poster":"media/posters/ai-13.jpg", "width":1920, "height":1080, "duration":45 }
   ]
 }

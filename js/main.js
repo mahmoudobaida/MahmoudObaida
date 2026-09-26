@@ -49,7 +49,18 @@
     ]);
   }
 
-  function render({ categories, works }) {
+  /* The tools under Services come from data/works.json too, so they can be managed from the dashboard. */
+  function renderTools(tools) {
+    const names = Array.isArray(tools) ? tools : [];
+    const list = $('.tools');
+    list.replaceChildren(...names.map((name) => el('li', { text: name })));
+    list.hidden = names.length === 0;
+    $('.tools-label').hidden = names.length === 0;
+    reveal(list.querySelectorAll('li'));
+  }
+
+  function render({ categories, works, tools }) {
+    renderTools(tools);
     const blocks = categories
       .map((category) => [category, works.filter((w) => w.category === category.id)])
       .filter(([, list]) => list.length > 0)
@@ -134,7 +145,7 @@
   reveal(all('.about > div:last-child > *'));
   reveal(all('#services .kicker, #services h2'));
   reveal(all('.service'), { mod: 4 });
-  reveal(all('.tools-label, .tools li'));
+  reveal(all('.tools-label'));
   reveal(all('#projects .kicker, #projects h2'));
   reveal(all('.contact-box > *'));
 

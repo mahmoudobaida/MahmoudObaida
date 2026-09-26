@@ -8,7 +8,7 @@ A static portfolio website for a photographer and video editor. Plain HTML, CSS 
 index.html          page markup (Hero, About, Services, Projects, Contact)
 css/styles.css      all styling (design tokens are in :root)
 js/main.js          renders the projects section, video lightbox, nav highlight
-data/works.json     categories and projects (the only content file you edit by hand)
+data/works.json     categories, tools and projects (the only content file you edit by hand)
 admin/              dashboard for managing videos and categories (see below)
 media/
   videos/           web-ready H.264 videos
@@ -36,6 +36,7 @@ Open `/admin/` on the live site (for example `https://<user>.github.io/<repo>/ad
 - **Sign in** with a GitHub fine-grained personal access token limited to this repository with **Contents: Read and write**. The token is stored only in that browser.
 - **Videos:** upload (MP4, H.264, up to 90 MB; the thumbnail is chosen from a frame of the video), edit title and category, reorder, delete.
 - **Categories:** add, rename, reorder, delete (a category with videos cannot be deleted).
+- **Tools:** the chips under Services on the site. Add, rename, reorder, delete.
 - Every action is one commit. GitHub Pages republishes the site 1–2 minutes later.
 - Deleting a video removes its files from the site, but they remain in the Git history.
 

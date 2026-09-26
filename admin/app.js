@@ -199,6 +199,55 @@ const deleteWork = (work) => mutate({
   files: [{ path: work.video, remove: true }, { path: work.poster, remove: true }],
 });
 
+/* ---------- tools (the chips under Services on the site) ---------- */
+const toolsOf = (data) => { if (!Array.isArray(data.tools)) data.tools = []; return data.tools; };
+const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
+const findTool = (tools, name) => {
+  const i = tools.indexOf(name);
+  if (i === -1) throw new UserError('هذه الأداة تغيّرت أو انحذفت من مكان آخر. حدّث الصفحة.');
+  return i;
+};
+
+const addTool = (name) => mutate({
+  message: `Add tool: ${name}`,
+  apply(data) {
+    const tools = toolsOf(data);
+    if (tools.some((t) => sameName(t, name))) throw new UserError('هذه الأداة موجودة مسبقًا.');
+    tools.push(name);
+    return data;
+  },
+});
+
+const renameTool = (oldName, name) => mutate({
+  message: `Rename tool: ${name}`,
+  apply(data) {
+    const tools = toolsOf(data);
+    const i = findTool(tools, oldName);
+    if (tools.some((t, j) => j !== i && sameName(t, name))) throw new UserError('هذه الأداة موجودة مسبقًا.');
+    tools[i] = name;
+    return data;
+  },
+});
+
+const deleteTool = (name) => mutate({
+  message: `Delete tool: ${name}`,
+  apply(data) {
+    const tools = toolsOf(data);
+    tools.splice(findTool(tools, name), 1);
+    return data;
+  },
+});
+
+const moveTool = (name, step) => mutate({
+  message: 'Reorder tools',
+  apply(data) {
+    const tools = toolsOf(data);
+    const i = findTool(tools, name);
+    if (tools[i + step] !== undefined) swap(tools, i, i + step);
+    return data;
+  },
+});
+
 /* ---------- upload ---------- */
 async function sniffCodec(file) {
   const decode = async (blob) => new TextDecoder('latin1').decode(await blob.arrayBuffer());
@@ -354,7 +403,8 @@ function editVideoDialog(work) {
   });
 }
 
-function nameDialog(titleText, initial = '') {
+/** A small "type a name" dialog, used for renaming categories and tools. */
+function nameDialog(titleText, initial = '', label = 'اسم التصنيف') {
   return showDialog(titleText, (close) => {
     const input = h('input', { type: 'text', id: 'cat-name', value: initial, maxlength: '40' });
     const error = h('p', { class: 'error-text', role: 'alert' });
@@ -362,11 +412,11 @@ function nameDialog(titleText, initial = '') {
     return h('form', {
       onsubmit: (e) => {
         e.preventDefault();
-        if (!input.value.trim()) { error.textContent = 'اكتب اسم التصنيف.'; return; }
+        if (!input.value.trim()) { error.textContent = `اكتب ${label}.`; return; }
         close(input.value.trim());
       },
     },
-      h('div', { class: 'field' }, h('label', { for: 'cat-name', text: 'اسم التصنيف' }), input),
+      h('div', { class: 'field' }, h('label', { for: 'cat-name', text: label }), input),
       error,
       h('div', { class: 'modal-actions' }, h('button', { class: 'btn btn-primary', type: 'submit' }, 'حفظ'), h('button', { class: 'btn', type: 'button', onclick: () => close(null) }, 'إلغاء')),
     );
@@ -471,6 +521,39 @@ function categoriesPanel() {
   return panel;
 }
 
+function toolsPanel() {
+  const tools = Array.isArray(state.data.tools) ? state.data.tools : [];
+  const input = h('input', { type: 'text', 'aria-label': 'اسم الأداة الجديدة', placeholder: 'اسم أداة جديدة، مثلًا: DaVinci Resolve', maxlength: '40' });
+  const add = () => { const name = input.value.trim(); if (name) addTool(name); else input.focus(); };
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') add(); });
+
+  const panel = h('div', {}, h('div', { class: 'add-cat' }, input, h('button', { class: 'btn btn-primary', type: 'button', onclick: add }, 'إضافة')));
+  if (!tools.length) {
+    panel.append(h('div', { class: 'empty' },
+      h('h2', { text: 'ما في أدوات' }),
+      h('p', { text: 'الأدوات بتظهر تحت قسم الخدمات على الموقع. أضف أول أداة (مثل «Premiere Pro»). وإذا القائمة فاضية، بينخفي عنوان الأدوات من الموقع.' }),
+    ));
+    return panel;
+  }
+  panel.append(h('ul', { class: 'rows' }, tools.map((name, i) => h('li', { class: 'row cat' },
+    h('div', { class: 'row-title', text: name }),
+    h('div', { class: 'actions' },
+      h('button', { class: 'icon-btn', type: 'button', 'aria-label': 'تحريك للأعلى', title: 'تحريك للأعلى', disabled: i === 0, onclick: () => moveTool(name, -1) }, '▲'),
+      h('button', { class: 'icon-btn', type: 'button', 'aria-label': 'تحريك للأسفل', title: 'تحريك للأسفل', disabled: i === tools.length - 1, onclick: () => moveTool(name, 1) }, '▼'),
+      h('button', { class: 'btn btn-sm', type: 'button', onclick: async () => {
+        const next = await nameDialog('تعديل اسم الأداة', name, 'اسم الأداة');
+        if (next && next !== name) renameTool(name, next);
+      } }, 'تعديل'),
+      h('button', { class: 'btn btn-sm btn-danger', type: 'button', onclick: async () => {
+        const yes = await confirmAction({ title: 'حذف الأداة', danger: true, okLabel: 'احذف الأداة', message: `رح تنحذف «${name}» من قائمة الأدوات على الموقع.` });
+        if (yes) deleteTool(name);
+      } }, 'حذف'),
+    ),
+  ))));
+  panel.append(h('p', { class: 'small', text: 'ترتيب الأدوات هون هو نفس ترتيبها على الموقع.' }));
+  return panel;
+}
+
 function renderLogin(message = '') {
   const token = h('input', { type: 'password', id: 'token', autocomplete: 'off', placeholder: 'github_pat_…' });
   const remember = h('input', { type: 'checkbox', id: 'remember' });
@@ -515,8 +598,8 @@ function render() {
         h('button', { class: 'btn btn-sm', type: 'button', onclick: () => { forgetToken(); state.gh = null; state.data = null; renderLogin(); } }, 'تسجيل الخروج'),
       ),
     ),
-    h('div', { class: 'tabs', role: 'tablist' }, tab('videos', 'الفيديوهات'), tab('categories', 'التصنيفات')),
-    state.tab === 'videos' ? videosPanel() : categoriesPanel(),
+    h('div', { class: 'tabs', role: 'tablist' }, tab('videos', 'الفيديوهات'), tab('categories', 'التصنيفات'), tab('tools', 'الأدوات')),
+    { videos: videosPanel, categories: categoriesPanel, tools: toolsPanel }[state.tab](),
   ));
 }
 
