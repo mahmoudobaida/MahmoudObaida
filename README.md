@@ -34,7 +34,7 @@ Then open http://localhost:5173.
 Open `/admin/` on the live site (for example `https://<user>.github.io/<repo>/admin/`). It is a static page that edits `data/works.json` and uploads media by committing to this repository through the GitHub API, so there is no server.
 
 - **Sign in** with a GitHub fine-grained personal access token limited to this repository with **Contents: Read and write**. The token is stored only in that browser.
-- **Videos:** upload (MP4, H.264, up to 90 MB; the thumbnail is chosen from a frame of the video), edit title and category, reorder, delete.
+- **Videos:** upload (MP4, H.264, up to 60 MB; the thumbnail is chosen from a frame of the video), edit title and category, reorder, delete. The 60 MB cap is lower than GitHub's 100 MB file limit because the dashboard uploads through the Git Blobs API as base64, which inflates the file by ~33% — a video encoded from `tools/encode.mjs` and pushed with `git push` can still go up to 100 MB (see below), just not through the browser.
 - **Categories:** add, rename, reorder, delete (a category with videos cannot be deleted).
 - **Tools:** the chips under Services on the site. Add, rename, reorder, delete.
 - Every action is one commit. GitHub Pages republishes the site 1–2 minutes later.

@@ -5,7 +5,9 @@
 import { GitHub, GitHubError } from './github.js';
 
 const DATA_PATH = 'data/works.json';
-const MAX_VIDEO_BYTES = 90 * 1024 * 1024;   // GitHub rejects files over 100 MB; stay well under
+// GitHub's blob API caps the request at 100 MB of *base64-encoded* content, and base64 inflates
+// the file by ~33%. So the real ceiling for the original video is ~75 MB (100 / 1.33); stay well under.
+const MAX_VIDEO_BYTES = 60 * 1024 * 1024;
 const REPO_SOFT_LIMIT_MB = 1000;            // size GitHub recommends for a Pages site
 const TOKEN_KEY = 'obaida-admin-token';
 

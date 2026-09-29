@@ -14,6 +14,7 @@ const explain = (status, apiMessage) => {
   if (status === 403) return 'التوكن ما عنده صلاحية الكتابة، أو تجاوزت الحد المسموح مؤقتًا. من إعدادات التوكن على GitHub اضغط «Add permissions» واختر «Contents» ثم غيّر الصلاحية إلى «Read and write».';
   if (status === 404) return 'المستودع غير موجود أو التوكن ما بيغطيه. تأكد من اسم الحساب واسم المستودع.';
   if (status === 409 || status === 422) return 'تم تعديل الموقع من مكان آخر بنفس اللحظة. حدّث الصفحة وجرّب مرة ثانية.';
+  if (status === 413) return 'الفيديو أكبر من اللازم بعد رفعه، وGitHub رفضه. صدّره بجودة أقل أو قصّه ثم حاول من جديد.';
   return `صار خطأ من GitHub (${status}). ${apiMessage || ''}`.trim();
 };
 
