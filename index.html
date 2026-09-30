@@ -120,7 +120,7 @@
 <dialog id="lightbox" aria-label="Video player">
   <div class="player" id="player">
     <button class="close" id="close" type="button" aria-label="Close video">✕</button>
-    <video id="vid" controls playsinline preload="none"></video>
+    <video id="vid" controls playsinline preload="none" controlslist="nodownload noremoteplayback" disablepictureinpicture oncontextmenu="return false"></video>
     <p class="cap" id="cap"></p>
   </div>
 </dialog>
